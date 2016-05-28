@@ -1,8 +1,8 @@
-dbc2dbf: blast.c blast.h
-	cc -DTEST -static -o dbc2dbf blast.c
+blast-dbf: blast-dbf.c blast.c blast.h
+	gcc -o blast-dbf blast.c blast-dbf.c
 
-test: blast
-	blast < test.pk | cmp - test.txt
+test: blast-dbf
+	./blast-dbf < sids.dbc | cmp - sids.dbf
 
 clean:
-	rm -f blast blast.o
+	rm -f blast-dbf *.o
