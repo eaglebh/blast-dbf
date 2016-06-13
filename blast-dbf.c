@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdint.h>
 
 #include "blast.h"
 
@@ -46,12 +47,18 @@ static int outf(void *how, unsigned char *buf, unsigned len)
     This function handles the processing of input to output given both file descriptors.
  */
 int dbc2dbf(FILE* input, FILE* output) {
-    int     read, err, header, ret, n;
+    int           read = 0, err = 0, ret = 0, n = 0;
+    uint16_t      header = 0;
+    unsigned char rawHeader[2];
 
     read = fseek(input, 8, SEEK_SET);
     err = ferror(input);
-    read = fread(&header, 2, 1, input);
+
+    read = fread(rawHeader, 2, 1, input);
     err = ferror(input);
+
+    /* Platform independent code (header is stored in little endian format) */
+    header = rawHeader[0] + (rawHeader[1] << 8);
 
     read = fseek(input, 0, SEEK_SET);
     err = ferror(input);
