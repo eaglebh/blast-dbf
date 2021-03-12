@@ -67,6 +67,7 @@ int dbc2dbf(FILE* input, FILE* output) {
 
     read = fread(buf, 1, header, input);
     err = ferror(input);
+    buf[header-1] = 0x0D;
     read = fwrite(buf, 1, header, output);
     err = ferror(output);
 
