@@ -63,6 +63,7 @@ int dbc2dbf(FILE* input, FILE* output) {
     read = fseek(input, 0, SEEK_SET);
     err = ferror(input);
 
+    if( header-1 < 0) return -4;
     unsigned char buf[header];
 
     read = fread(buf, 1, header, input);
